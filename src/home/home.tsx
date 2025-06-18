@@ -1,35 +1,18 @@
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
-import { 
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuContent,
-  NavigationMenuTrigger,
-  NavigationMenuLink,
-  NavigationMenuIndicator,
-  NavigationMenuViewport,
-  navigationMenuTriggerStyle,
-} from "../../themes/components/ui/navigation-menu";
+import Navbar from "../components/Navbar";
 
 export function Welcome() {
   return (
-    <main className="flex items-center justify-center pt-16 pb-4">
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuIndicator>1</NavigationMenuIndicator>
-          <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink>Link</NavigationMenuLink>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <main className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
 
-      <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
-        <header className="flex flex-col items-center gap-9">
-          <div className="w-[500px] max-w-[100vw] p-4">
+      <div className="mb-6 px-4 pt-4">
+        <Navbar title="Produtos Store" />
+      </div>
+
+      <div className="container mx-auto px-4 py-4 flex-1">
+        <div className="flex flex-col items-center gap-10">
+          <div className="max-w-[500px] w-full">
             <img
               src={logoLight}
               alt="React Router"
@@ -41,28 +24,25 @@ export function Welcome() {
               className="hidden w-full dark:block"
             />
           </div>
-        </header>
-        <div className="max-w-[300px] w-full space-y-6 px-4">
-          <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
-            <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
-              What&apos;s next?
-            </p>
-            <ul>
+
+          <div className="max-w-[600px] w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-4 text-green-600 dark:text-green-400">O que fazer agora?</h2>
+            <ul className="space-y-3">
               {resources.map(({ href, text, icon }) => (
                 <li key={href}>
                   <a
-                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
+                    className="group flex items-center gap-3 p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-200"
                     href={href}
                     target="_blank"
                     rel="noreferrer"
                   >
                     {icon}
-                    {text}
+                    <span className="text-blue-600 dark:text-blue-400 font-medium">{text}</span>
                   </a>
                 </li>
               ))}
             </ul>
-          </nav>
+          </div>
         </div>
       </div>
     </main>
