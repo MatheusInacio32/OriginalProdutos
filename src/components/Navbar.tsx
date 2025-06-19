@@ -154,8 +154,6 @@ function NavigationMenuIndicator({
     </NavigationMenuPrimitive.Indicator>
   )
 }
-
-// Defina animações no seu arquivo global CSS ou inline aqui
 const styles = `
   @keyframes enterFromRight {
     from {
