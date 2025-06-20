@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
-import { ChevronDownIcon } from "lucide-react"
+import { ChevronDownIcon, Search, Menu, X } from "lucide-react"
 
 import { cn } from "utils/lib/utils"
 
@@ -216,6 +216,11 @@ const styles = `
       opacity: 0;
     }
   }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
 `;
 
 type NavbarProps = {
@@ -223,7 +228,10 @@ type NavbarProps = {
   className?: string;
 };
 
-const Navbar = ({ title = "OriginalProdutos", className }: NavbarProps) => {
+const Navbar = ({ title = "Original", className }: NavbarProps) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [activeLink, setActiveLink] = React.useState("");
+  
   React.useEffect(() => {
     // Adicionar as animações ao documento
     const styleSheet = document.createElement("style");
@@ -237,77 +245,77 @@ const Navbar = ({ title = "OriginalProdutos", className }: NavbarProps) => {
   }, []);
 
   return (
-    <header className={cn("w-full bg-gradient-to-r from-green-500 to-green-600 shadow-md rounded-lg", className)}>
+    <header className={cn(
+      "w-full bg-gradient-to-r from-green-800 to-green-600 shadow-md rounded-lg mx-4", 
+      "sticky top-0 z-50",
+      className
+    )}>
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo ou título */}
+          {/* Menu Hamburguer para Mobile (movido para esquerda) */}
+          <div className="block lg:hidden">
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-white p-2 focus:outline-none transition-transform duration-300"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+          
+          {/* Espaço vazio onde estava o título (agora removido) */}
           <div className="text-white text-xl font-semibold">
             {title}
           </div>
           
-          {/* Menu principal com itens alinhados */}
-          <div className="flex items-center space-x-1">
+          {/* Menu Desktop */}
+          <div className="hidden lg:flex items-center space-x-6">
+            <a 
+              href="/" 
+              className={cn(
+                "text-white hover:text-green-100 px-3 py-2 rounded-md transition-colors duration-300",
+                activeLink === "inicio" && "bg-green-700 animate-pulse"
+              )}
+              onClick={() => setActiveLink("inicio")}
+            >
+              Início
+            </a>
+            
             {/* Menu Produtos */}
             <div className="relative">
               <NavigationMenu viewport={false}>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-white hover:text-white hover:bg-green-600">
+                    <NavigationMenuTrigger className="text-white hover:text-green-100 hover:bg-green-700">
                       Produtos
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="w-[260px] p-2 grid gap-2">
                         <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
+                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-700 block transition-all duration-200">
                             <div className="font-medium">Novos Produtos</div>
                             <div className="text-sm text-gray-600 dark:text-gray-300">Confira nossos lançamentos</div>
                           </NavigationMenuLink>
                         </li>
                         <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
+                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-700 block transition-all duration-200">
                             <div className="font-medium">Mais Vendidos</div>
                             <div className="text-sm text-gray-600 dark:text-gray-300">Produtos populares</div>
                           </NavigationMenuLink>
                         </li>
                         <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
+                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-700 block transition-all duration-200">
                             <div className="font-medium">Promoções</div>
                             <div className="text-sm text-gray-600 dark:text-gray-300">Ofertas especiais</div>
                           </NavigationMenuLink>
                         </li>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
-            
-            {/* Menu Sobre Nós */}
-            <div className="relative">
-              <NavigationMenu viewport={false}>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-white hover:text-white hover:bg-green-600">
-                      Sobre Nós
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="w-[260px] p-2 grid gap-2">
                         <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
-                            <div className="font-medium">Nossa História</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-300">Conheça nossa jornada</div>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
-                            <div className="font-medium">Equipe</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-300">Nossos profissionais</div>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
-                            <div className="font-medium">Missão e Valores</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-300">O que nos motiva</div>
+                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-700 block transition-all duration-200">
+                            <div className="font-medium">Todos os Produtos</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-300">Ver catálogo completo</div>
                           </NavigationMenuLink>
                         </li>
                       </ul>
@@ -317,42 +325,112 @@ const Navbar = ({ title = "OriginalProdutos", className }: NavbarProps) => {
               </NavigationMenu>
             </div>
             
-            {/* Menu Contato */}
-            <div className="relative">
-              <NavigationMenu viewport={false}>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className="text-white hover:text-white hover:bg-green-600">
-                      Contato
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="w-[260px] p-2 grid gap-2">
-                        <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
-                            <div className="font-medium">Fale Conosco</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-300">Envie sua mensagem</div>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
-                            <div className="font-medium">Suporte</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-300">Ajuda com produtos</div>
-                          </NavigationMenuLink>
-                        </li>
-                        <li>
-                          <NavigationMenuLink className="p-2 hover:bg-green-100 dark:hover:bg-green-900 block transition-all duration-200">
-                            <div className="font-medium">Localização</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-300">Nossas lojas físicas</div>
-                          </NavigationMenuLink>
-                        </li>
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+            <a 
+              href="/#quemSomos" 
+              className={cn(
+                "text-white hover:text-green-100 px-3 py-2 rounded-md transition-colors duration-300",
+                activeLink === "quemsomos" && "bg-green-700 animate-pulse"
+              )}
+              onClick={() => setActiveLink("quemsomos")}
+            >
+              Quem Somos
+            </a>
+            
+            <a 
+              href="https://wa.me/554498143827?text=Olá, acessei o site da Original Produtos e gostaria de mais informações sobre os produtos." 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={cn(
+                "text-white hover:text-green-100 px-3 py-2 rounded-md transition-colors duration-300",
+                activeLink === "contato" && "bg-green-700 animate-pulse"
+              )}
+              onClick={() => setActiveLink("contato")}
+            >
+              Contato
+            </a>
+            
+            <a 
+              href="/localizacao" 
+              className={cn(
+                "text-white hover:text-green-100 px-3 py-2 rounded-md transition-colors duration-300",
+                activeLink === "localizacao" && "bg-green-700 animate-pulse"
+              )}
+              onClick={() => setActiveLink("localizacao")}
+            >
+              Localização
+            </a>
+          </div>
+          
+          {/* Ícone de Busca */}
+          <div className="flex items-center">
+            <button 
+              className="text-white hover:text-green-100 p-2 transition-colors duration-300"
+              onClick={() => window.location.href = '/produtos'}
+            >
+              <Search className="h-5 w-5" />
+            </button>
           </div>
         </div>
+        
+        {/* Menu Mobile Dropdown */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden py-3 mt-3 border-t border-green-700 animate-fadeIn">
+            <div className="space-y-2">
+              <a 
+                href="/" 
+                className="block text-white hover:bg-green-700 px-3 py-2 rounded-md transition-colors duration-300"
+                onClick={() => {
+                  setActiveLink("inicio");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Início
+              </a>
+              <a 
+                href="/produtos" 
+                className="block text-white hover:bg-green-700 px-3 py-2 rounded-md transition-colors duration-300"
+                onClick={() => {
+                  setActiveLink("produtos");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Produtos
+              </a>
+              <a 
+                href="/#quemSomos" 
+                className="block text-white hover:bg-green-700 px-3 py-2 rounded-md transition-colors duration-300"
+                onClick={() => {
+                  setActiveLink("quemsomos");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Quem Somos
+              </a>
+              <a 
+                href="https://wa.me/554498143827?text=Olá, acessei o site da Original Produtos e gostaria de mais informações sobre os produtos." 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block text-white hover:bg-green-700 px-3 py-2 rounded-md transition-colors duration-300"
+                onClick={() => {
+                  setActiveLink("contato");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Contato
+              </a>
+              <a 
+                href="/localizacao" 
+                className="block text-white hover:bg-green-700 px-3 py-2 rounded-md transition-colors duration-300"
+                onClick={() => {
+                  setActiveLink("localizacao");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Localização
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

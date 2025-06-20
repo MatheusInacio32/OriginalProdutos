@@ -12,7 +12,7 @@ export function Welcome() {
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="flex justify-center">
           <Link 
-            to="/page2" 
+            to="/cart" 
             className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors shadow-md"
           >
             Ir para Página 2
